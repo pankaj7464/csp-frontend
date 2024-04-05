@@ -1,0 +1,182 @@
+<form
+  [formGroup]="form"
+  (ngSubmit)="submitForm()"
+  class="flex gap-2 flex-wrap m-4"
+  *ngIf="isManager()"
+>
+  <div
+    class="flex justify-between flex-col md:flex-row items-center w-full mb-4 gap-4"
+  >
+    <!-- Version -->
+    <mat-form-field class="flex-1 w-full">
+      <mat-label>Version</mat-label>
+      <input
+        matInput
+        formControlName="version"
+        type="number"
+        placeholder="Enter version"
+      />
+    </mat-form-field>
+
+    <!-- Type -->
+    <mat-form-field class="flex-1 w-full">
+      <mat-label>Type</mat-label>
+      <input matInput formControlName="type" placeholder="Enter type" />
+    </mat-form-field>
+
+    <!-- Change -->
+    <mat-form-field class="flex-1 w-full">
+      <mat-label>Change</mat-label>
+      <input matInput formControlName="change" placeholder="Enter change" />
+    </mat-form-field>
+
+    <!-- Change Reason -->
+    <mat-form-field class="flex-1 w-full">
+      <mat-label>Change Reason</mat-label>
+      <input
+        matInput
+        formControlName="changeReason"
+        placeholder="Enter change reason"
+      />
+    </mat-form-field>
+  </div>
+
+  <div
+    class="flex justify-between flex-col md:flex-row items-center w-full mb-4 gap-4"
+  >
+    <!-- Created By -->
+    <mat-form-field class="flex-1 w-full">
+      <mat-label>Project Manager</mat-label>
+      <mat-select formControlName="createdBy">
+        <mat-option
+          *ngFor="let manager of managers; let idx = index"
+          [value]="manager.id"
+          >{{ manager.name }}</mat-option
+        >
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Revision Date -->
+    <mat-form-field class="flex-1 w-full">
+      <mat-label>Revision Date</mat-label>
+      <input
+        matInput
+        [matDatepicker]="picker"
+        formControlName="revisionDate"
+        placeholder="Choose a date"
+      />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <!-- Approval Date -->
+    <mat-form-field class="flex-1 w-full">
+      <mat-label>Approval Date</mat-label>
+      <input
+        matInput
+        [matDatepicker]="picker2"
+        formControlName="approvalDate"
+        placeholder="Choose a date"
+      />
+      <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+      <mat-datepicker #picker2></mat-datepicker>
+    </mat-form-field>
+
+    <!-- Approved By -->
+    <mat-form-field class="flex-1 w-full">
+      <mat-label>Approved By</mat-label>
+      <input
+        matInput
+        formControlName="approvedBy"
+        placeholder="Enter approver"
+      />
+    </mat-form-field>
+  </div>
+
+  <!-- Submit Button -->
+  <button mat-raised-button color="primary" type="submit" class="mat-primary">
+    {{ editDataId ? "Update" : "Submit" }}
+  </button>
+</form>
+
+<div class="mat-elevation-z8 mat-table-responsive">
+  <table mat-table [dataSource]="dataSource">
+    <!-- Version Column -->
+    <ng-container matColumnDef="version">
+      <th mat-header-cell *matHeaderCellDef>Version</th>
+      <td mat-cell *matCellDef="let element">{{ element.version }}</td>
+    </ng-container>
+
+    <!-- Type Column -->
+    <ng-container matColumnDef="type">
+      <th mat-header-cell *matHeaderCellDef>Type</th>
+      <td mat-cell *matCellDef="let element">{{ element.type }}</td>
+    </ng-container>
+
+    <!-- Change Column -->
+    <ng-container matColumnDef="change">
+      <th mat-header-cell *matHeaderCellDef>Change</th>
+      <td mat-cell *matCellDef="let element">{{ element.change }}</td>
+    </ng-container>
+
+    <!-- Change Reason Column -->
+    <ng-container matColumnDef="changeReason">
+      <th mat-header-cell *matHeaderCellDef>Change Reason</th>
+      <td mat-cell *matCellDef="let element">{{ element.changeReason }}</td>
+    </ng-container>
+
+    <!-- Created By Column -->
+    <ng-container matColumnDef="createdBy">
+      <th mat-header-cell *matHeaderCellDef>Created By</th>
+      <td mat-cell *matCellDef="let element">{{ element.creater.name ||'-' }}</td>
+    </ng-container>
+
+    <!-- Revision Date Column -->
+    <ng-container matColumnDef="revisionDate">
+      <th mat-header-cell *matHeaderCellDef>Revision Date</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.revisionDate | date }}
+      </td>
+    </ng-container>
+
+    <!-- Approval Date Column -->
+    <ng-container matColumnDef="approvalDate">
+      <th mat-header-cell *matHeaderCellDef>Approval Date</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.approvalDate | date }}
+      </td>
+    </ng-container>
+
+    <!-- Approved By Column -->
+    <ng-container matColumnDef="approvedBy">
+      <th mat-header-cell *matHeaderCellDef>Approved By</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.creater.name || "-" }}
+      </td>
+    </ng-container>
+
+    <!-- Action Column -->
+    <ng-container matColumnDef="Actions">
+      <th mat-header-cell *matHeaderCellDef>Action</th>
+      <td mat-cell *matCellDef="let element" class="flex items-center">
+        <button
+          [disabled]="!isManager()"
+          mat-icon-button
+          (click)="editItem(element)"
+        >
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button
+          [disabled]="!isManager()"
+          mat-icon-button
+          (click)="deleteItem(element.id)"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</div>

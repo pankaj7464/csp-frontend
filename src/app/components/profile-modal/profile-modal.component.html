@@ -1,0 +1,14 @@
+<h2 mat-dialog-title>{{ userData.email }}</h2>
+<mat-dialog-content class="">
+  <div class="w-full flex item-center flex-col" style="align-items: center">
+    <img
+      [src]="userData.picture"
+      alt="Profile Picture"
+      class="rounded-full w-32 h-32"
+    />
+    <span>{{ userData.nickname }}</span>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Close</button>
+</mat-dialog-actions>

@@ -1,0 +1,25 @@
+<div class="flex justify-between">
+  <button mat-raised-button type="button" mat-button>Toggle</button>
+  <!-- Submit Button -->
+  <button
+    mat-raised-button
+    color="primary"
+    background
+    type="button"
+    class="mat-primary"
+    (click)="generatePdf()"
+  >
+    Export PDF
+  </button>
+</div>
+<div class="flex justify-between items-center border-b-2 overflow-y-auto">
+  @for (tab of tabs; track $index) {
+  <span
+    class="p-2 cursor-pointer whitespace-nowrap"
+    [routerLink]="tab.path"
+    routerLinkActive="active"
+    (click)="navigateTo(tab.path)"
+    >{{ tab.displayName }}</span
+  >
+  }
+</div>

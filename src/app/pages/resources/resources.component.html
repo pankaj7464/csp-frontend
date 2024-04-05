@@ -1,0 +1,109 @@
+
+<form
+  [formGroup]="form"
+  (ngSubmit)="submitForm()"
+  class="flex gap-2 flex-wrap m-4"
+  *ngIf="isManager()"
+>
+  <div class="flex justify-between items-center w-full mb-4 gap-4">
+   
+    <!-- Role -->
+    <mat-form-field class="flex-1">
+      <mat-label>Role</mat-label>
+      <input matInput formControlName="role" type="text" />
+    </mat-form-field>
+
+    <!-- Start Date -->
+    <mat-form-field class="flex-1">
+      <mat-label>Start Date</mat-label>
+      <input matInput [matDatepicker]="picker1" formControlName="start" />
+      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+      <mat-datepicker #picker1></mat-datepicker>
+    </mat-form-field>
+
+    <!-- End Date -->
+    <mat-form-field class="flex-1">
+      <mat-label>End Date</mat-label>
+
+      <input matInput [matDatepicker]="picker2" formControlName="end" />
+      <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+      <mat-datepicker #picker2></mat-datepicker>
+    </mat-form-field>
+
+    <!-- Comment -->
+    <mat-form-field class="flex-1">
+      <mat-label>Allocation Percentage</mat-label>
+      <input matInput formControlName="allocationPercentage" type="number">
+    </mat-form-field>
+  </div>
+
+  <!-- Submit Button -->
+  <button
+    mat-raised-button
+    color="primary"
+    background
+    type="submit"
+    class="mat-primary"
+  >
+    Submit
+  </button>
+</form>
+
+<div class="mat-elevation-z8 mat-table-responsive">
+  <table mat-table [dataSource]="dataSource">
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>Name</th>
+      <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+    </ng-container>
+
+    <!-- Role Column -->
+    <ng-container matColumnDef="role">
+      <th mat-header-cell *matHeaderCellDef>Role</th>
+      <td mat-cell *matCellDef="let element">{{ element.role }}</td>
+    </ng-container>
+
+    <!-- Start Date Column -->
+    <ng-container matColumnDef="start">
+      <th mat-header-cell *matHeaderCellDef>Start Date</th>
+      <td mat-cell *matCellDef="let element">{{ element.start | date }}</td>
+    </ng-container>
+
+    <!-- End Date Column -->
+    <ng-container matColumnDef="end">
+      <th mat-header-cell *matHeaderCellDef>End Date</th>
+      <td mat-cell *matCellDef="let element">{{ element.end | date }}</td>
+    </ng-container>
+
+    <!-- Comment Column -->
+    <ng-container matColumnDef="allocationPercentage">
+      <th mat-header-cell *matHeaderCellDef>Allocation Percentage</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.allocationPercentage }}
+      </td>
+    </ng-container>
+
+    <!-- Action Column -->
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef>Action</th>
+      <td mat-cell *matCellDef="let element" class="flex items-center">
+        <button
+          [disabled]="!isManager()"
+          mat-icon-button
+          (click)="editItem(element)"
+        >
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button
+          [disabled]="!isManager()"
+          mat-icon-button
+          (click)="deleteItem(element.id)"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</div>

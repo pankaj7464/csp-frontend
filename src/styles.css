@@ -1,0 +1,15 @@
+/* You can add global styles to this file, and also import other style files */
+
+.mat-table-responsive {
+    overflow-x: auto;
+    max-width: 100%;
+  }
+
+  th{
+    white-space: nowrap;
+  }
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

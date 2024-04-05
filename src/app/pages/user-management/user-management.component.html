@@ -1,0 +1,56 @@
+<div class="mat-elevation-z8 mat-table-responsive">
+  <table mat-table [dataSource]="dataSource">
+    <!-- No Of Resouces Column -->
+    <ng-container matColumnDef="Name">
+      <th mat-header-cell *matHeaderCellDef>Name</th>
+      <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+    </ng-container>
+
+    <!-- Email Column -->
+    <ng-container matColumnDef="Email">
+      <th mat-header-cell *matHeaderCellDef>Email</th>
+      <td mat-cell *matCellDef="let element">{{ element.email }}</td>
+    </ng-container>
+
+    <!-- Email Column -->
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef>Account Status</th>
+      <td mat-cell *matCellDef="let element">
+        <mat-slide-toggle
+          color="blue"
+          [checked]="element.active"
+          (change)="onSlideToggleChange($event.checked, element)"
+        >
+     
+        </mat-slide-toggle>
+
+      
+      </td>
+    </ng-container>
+
+
+    <!-- Role Column -->
+    <ng-container matColumnDef="Role">
+      <th mat-header-cell *matHeaderCellDef>Role</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.role?.name || "Not Assigned Yet" }}
+      </td>
+    </ng-container>
+
+    <!-- Action Column -->
+    <ng-container matColumnDef="Actions">
+      <th mat-header-cell *matHeaderCellDef>Action</th>
+      <td mat-cell *matCellDef="let element" class="flex items-center">
+        <button (click)="openRoleEdit(element)" mat-icon-button>
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button>
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</div>
