@@ -37,7 +37,7 @@ export class AuditHistoryComponent {
 
 
   constructor(private route: ActivatedRoute, private apiService: ApiService, private fb: FormBuilder, private authorizationService: AuthorizationService) {
-
+    this.getAuditor()
   }
 
   projectId!: string;
@@ -58,24 +58,23 @@ export class AuditHistoryComponent {
       this.getAuditData(this.projectId);
     }
 
-    this.apiService.getAllProject().subscribe((res) => {
-      this.projects = res;
-    });
-    this.apiService.getAllUserByRole("Auditor").subscribe((res) => {
-      console.log(res,"Auditor");
-
-      this.auditors = JSON.parse(res);
-    });
+  
+   
 
   }
 
 
+  getAuditor(){
+    this.apiService.getAllUserByRole(Role.Auditor).subscribe((res) => {
+      console.log(res, "auditors")
+      this.auditors = JSON.parse(res).data;
+    });
+  }
 
   getAuditData(id: string) {
     this.apiService.getAllAuditHistory(id).subscribe((res) => {
       console.log(res);
       this.dataSource = res;
-
       console.log(this.dataSource,"audit datasource")
     });
   }
@@ -118,7 +117,9 @@ export class AuditHistoryComponent {
   }
 
   isAuditorOrAdmin(): boolean {
-    const userRole = this.authorizationService.getCurrentUser()?.role;
-    return userRole === Role.Auditor || userRole === Role.Admin;
+    const auditor = this.authorizationService.hasRoles(Role.Auditor);
+    const admin = this.authorizationService.hasRoles(Role.Admin);
+
+    return admin || auditor;
   }
 }

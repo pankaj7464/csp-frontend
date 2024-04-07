@@ -65,9 +65,9 @@ export class VersionHistoryComponent implements OnInit {
     });
   }
   getAllUserByRole() {
-    this.apiService.getAllUserByRole("Manager").subscribe((res) => {
+    this.apiService.getAllUserByRole(Role.Manager).subscribe((res) => {
       console.log(res);
-      this.managers = JSON.parse(res );
+      this.managers = JSON.parse(res ).data;
     });
   }
 
@@ -113,7 +113,8 @@ export class VersionHistoryComponent implements OnInit {
   }
 
   isManager(): boolean {
-    const userRole = this.authorizationService.getCurrentUser()?.role;
-    return userRole === Role.Manager || userRole === Role.Admin;
+    const manager = this.authorizationService.hasRoles(Role.Manager);
+    const admin = this.authorizationService.hasRoles(Role.Admin);
+    return admin || manager;
   }
 }

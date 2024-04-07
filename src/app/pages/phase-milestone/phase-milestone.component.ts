@@ -92,7 +92,9 @@ export class PhaseMilestoneComponent implements OnInit {
   }
 
   isManager(): boolean {
-    const userRole = this.authorizationService.getCurrentUser()?.role;
-    return userRole === Role.Manager || userRole === Role.Admin;
+    const manager = this.authorizationService.hasRoles(Role.Manager);
+    const admin = this.authorizationService.hasRoles(Role.Admin);
+
+    return admin || manager;
   }
 }

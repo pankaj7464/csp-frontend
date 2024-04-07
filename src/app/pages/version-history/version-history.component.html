@@ -46,12 +46,12 @@
   >
     <!-- Created By -->
     <mat-form-field class="flex-1 w-full">
-      <mat-label>Project Manager</mat-label>
+      <mat-label>Created By</mat-label>
       <mat-select formControlName="createdBy">
         <mat-option
           *ngFor="let manager of managers; let idx = index"
           [value]="manager.id"
-          >{{ manager.name }}</mat-option
+          >{{ manager.userName }}</mat-option
         >
       </mat-select>
     </mat-form-field>
@@ -84,12 +84,16 @@
 
     <!-- Approved By -->
     <mat-form-field class="flex-1 w-full">
-      <mat-label>Approved By</mat-label>
-      <input
-        matInput
-        formControlName="approvedBy"
-        placeholder="Enter approver"
-      />
+      <mat-label>Approve By</mat-label>
+      <mat-select formControlName="createdBy">
+        <mat-option
+
+          *ngFor="let manager of managers; let idx = index"
+          [value]="manager.id"
+
+          >{{ manager.userName }}</mat-option
+        >
+      </mat-select>
     </mat-form-field>
   </div>
 

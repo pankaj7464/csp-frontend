@@ -13,8 +13,8 @@ export class AdminGuard implements CanActivate {
 
   canActivate(): boolean {
     console.log("Must be Admin to access this page")
-    const userRole = this.authorizationService.getCurrentUser()?.role;
-    if(userRole === Role.Admin){
+    const isAdmin = this.authorizationService.hasRoles(Role.Admin);
+    if(isAdmin){
         console.log("Admin access granted");
             return true;
     }

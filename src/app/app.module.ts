@@ -14,7 +14,7 @@ import { EscalationMatrixComponent } from './pages/escalation-matrix/escalation-
 import { RiskProfileComponent } from './pages/risk-profiling/risk-profiling.component';
 import { PhaseMilestoneComponent } from './pages/phase-milestone/phase-milestone.component';
 import { HTTP_INTERCEPTORS, HttpClientModule, provideHttpClient } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 // Auth 0
 import { AuthModule } from '@auth0/auth0-angular';
@@ -40,7 +40,9 @@ import { RoleEditModalComponent } from './components/role-edit-modal/role-edit-m
 import { environment } from '../environments/environment';
 import { RoleManagementComponent } from './pages/role-management/role-management.component';
 import { NotVerifiedComponent } from './pages/not-verified/not-verified.component';
+
 import { TokenInterceptor } from './services/token-interceptor';
+import { AddRoleComponent } from './components/add-role/add-role.component';
 
 
 @NgModule({
@@ -66,11 +68,13 @@ import { TokenInterceptor } from './services/token-interceptor';
     UserManagementComponent,
     RoleEditModalComponent,
     RoleManagementComponent,
-    NotVerifiedComponent
+    NotVerifiedComponent,
+    AddRoleComponent
   ],
   imports: [
     BrowserModule,
     ReactiveFormsModule,
+    FormsModule,
     HttpClientModule,
     AppRoutingModule,
     MatFormFieldModule,

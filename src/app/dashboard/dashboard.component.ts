@@ -19,17 +19,19 @@ import { environment } from '../../environments/environment.development';
 export class DashboardComponent {
   userDetail!: any
   isLoading: boolean;
+  roles!: string[];
+  
   
   currentUrl: string;
   constructor(public dialog: MatDialog, public router: Router, public apiService: ApiService, private cdr: ChangeDetectorRef, @Inject(DOCUMENT) public document: Document,
     public authService: AuthService, public authorizationService: AuthorizationService) {
     this.currentUrl = router.url
+    
 
     this.authService.idTokenClaims$.subscribe(data => {
       console.log(data);
       this.apiService.exchangeToken(data?.__raw).subscribe(data => {
         console.log(data);
-
         localStorage.setItem("user", JSON.stringify(data));
         authService.user$.subscribe(userDetail => {
           this.userDetail = userDetail;
@@ -86,6 +88,7 @@ export class DashboardComponent {
 
 
   ngOnInit(): void {
+    this.roles = this.authorizationService.getCurrentUser()?.roles;
     this.apiService.isLoading().subscribe(isLoading => {
       this.isLoading = isLoading;
     });
@@ -135,8 +138,7 @@ export class DashboardComponent {
 
 
   isAdmin(): boolean {
-    const userRole = this.authorizationService.getCurrentUser()?.role;
-    return userRole === Role.Admin;
+    return this.authorizationService.hasRoles("admin");
   }
   openDialog() {
     this.dialog.open(ProfileModalComponent);

@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { ApiService } from '../../services/api.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { LowerCasePipe } from '@angular/common';
+import { AddRoleComponent } from '../../components/add-role/add-role.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-role-management',
@@ -12,15 +15,12 @@ export class RoleManagementComponent {
   form: FormGroup;
   displayedColumns = ["RoleName", "RoleDesc", "Actions"]
   editDataId: any;
-  constructor(private apiService: ApiService, private fb: FormBuilder,) {
+  constructor(private apiService: ApiService, private fb: FormBuilder,private dialog: MatDialog) {
 
     this.form = this.fb.group({
-      name: ['', Validators.required],
-      description: ['', Validators.required],
-
-
+      name: ['', Validators.required,LowerCasePipe],
+  
     });
-
     this.dataSource = [];
   }
   ngOnInit() {
@@ -30,41 +30,23 @@ export class RoleManagementComponent {
     this.apiService.getAllRole().subscribe((data) => {
       data = JSON.parse(data);
       console.log(data)
-      this.dataSource = data;
-
+      this.dataSource = data?.data;
     });
   }
-  submitForm() {
-    if (this.form.valid) {
-      if (!this.editDataId) {
-        console.log(this.form)
-        this.apiService.postRole(this.form.value).subscribe(res => {
-          this.getRoles()
-          this.form.reset()
-          this.editDataId = ""
-          this.apiService.showSuccessToast("Role Success Added");
-        })
-      }
-      else {
-        this.apiService.updateRole(this.editDataId, this.form.value).subscribe(res => {
-          this.getRoles();
-          this.form.reset()
-          this.editDataId = ""
-          this.apiService.showSuccessToast("Role Successfully editted");
-        })
-      }
-      console.log(this.form.value);
-    } else {
 
-    }
+  openAddRoleDialog(): void {
+    const dialogRef = this.dialog.open(AddRoleComponent, {
+    
+    
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.getRoles()
+    });
   }
-  editItem(data: any) {
-
-    this.editDataId = data.id;
-
-    this.form.patchValue(data);
-  }
+  
   deleteItem(id: any) {
+    console.log('Delete Item:', id);
     this.apiService.deleteRoles(id).subscribe(
       (res) => {
         this.getRoles();

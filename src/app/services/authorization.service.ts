@@ -3,14 +3,14 @@ export interface User {
   id: string;
   name: string;
   email: string;
-  role: string;
+  role: string[];
 }
 
 export enum Role {
-  Admin = 'Admin',
-  Manager = 'Manager',
-  Auditor = 'Auditor',
-  Client = 'Client',
+  Admin = 'admin',
+  Manager = 'manager',
+  Auditor = 'auditor',
+  Client = 'client',
 }
 
 @Injectable({
@@ -18,11 +18,14 @@ export enum Role {
 })
 export class AuthorizationService {
 
-  roles!: Role[];
+  roles!: any[];
+  constructor() {
+    this.roles = JSON.parse(localStorage.getItem('user') as any)?.data?.roles;
+    console.log(this.roles);
+  }
 
-
-  hasRoles(requiredRoles: Role[]): boolean {
-    return this.roles.some(role => requiredRoles.includes(role));
+  hasRoles(r: string): boolean {
+    return this.roles.includes(r);
   }
 
   // getAllUsers(): User[] {
@@ -30,28 +33,8 @@ export class AuthorizationService {
   // }
   getCurrentUser(): any {
     let user = localStorage.getItem('user') as any;
-    let role = localStorage.getItem('role') as any;
-
-    if (role) {
-      role = JSON.parse(role);
-      user = JSON.parse(user);
-
-      if (role) {
-        let userRole = {
-          name: user?.name,
-          id: role?.id,
-          email: user?.email,
-          role: role?.name
-        }
-        return userRole
-      }
-      else {
-        return { id: "4", name: 'Rahul yadav', email: 'rahul@example.com', role: 'client' }
-      }
-    }
+    user = JSON.parse(user as any);
+    console.log(user?.data.roles);
+    return user?.data;
   }
-
-
-
-
 }

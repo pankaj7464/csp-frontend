@@ -17,11 +17,10 @@ import { AuthService } from '@auth0/auth0-angular';
   imports: [MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose],
 })
 export class ProfileModalComponent {
-
   userData: any;
-
   constructor(private auth: AuthService, private router: Router) { }
 
+  
   ngOnInit(): void {
     this.auth.user$.subscribe(res => {
       this.userData = res;

@@ -1,0 +1,18 @@
+<mat-dialog-content class="">
+    <div class="w-full flex items-center flex-col" style="align-items: center">
+        <div class="flex justify-between items-center w-full mb-4 gap-4">
+            <!-- Role Name -->
+            <mat-form-field class="flex-1">
+              <mat-label>Role name</mat-label>
+              <input [(ngModel)]="roleName" matInput >
+            </mat-form-field>
+            <!-- General Update (if needed) -->
+          </div>
+        
+          <!-- Submit Button -->
+          <button mat-raised-button color="primary" type="button" (click)="submitForm(  )">
+          Add
+          </button>
+    </div>
+  </mat-dialog-content>
+  

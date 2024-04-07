@@ -100,7 +100,7 @@ export class EscalationMatrixComponent implements OnInit {
     );
   }
   isAdmin(): boolean {
-    const userRole = this.authorizationService.getCurrentUser()?.role;
-    return userRole === Role.Admin;
+    const admin = this.authorizationService.hasRoles(Role.Admin);
+    return admin;
   }
 }

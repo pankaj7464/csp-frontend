@@ -78,21 +78,4 @@ export class LoginComponent {
     }
   }
 
-  // Function to handle register form submission
-  register() {
-    if (this.registerForm.valid) {
-      console.log('Register Form Submitted!', this.registerForm.value);
-      this.apiService.register(this.registerForm.value).subscribe(data => {
-        console.log(JSON.parse(data));
-        this.apiService.showSuccessToast("You have successfully registered. Please Wait till you have Verified ")
-        this.changeTab(0);
-      },
-        error => {
-          this.apiService.showSuccessToast(" There was an error")
-        }
-      )
-    } else {
-
-    }
-  }
 }

@@ -88,7 +88,8 @@ export class ClientFeedbackComponent {
     );
   }
   isManager(): boolean {
-    const userRole = this.authorizationService.getCurrentUser()?.role;
-    return userRole === Role.Admin || userRole === Role.Manager;
+    const manager = this.authorizationService.hasRoles(Role.Manager);
+    const admin = this.authorizationService.hasRoles(Role.Admin);
+    return admin || manager;
   }
 }

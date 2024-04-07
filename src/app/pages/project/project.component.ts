@@ -29,26 +29,18 @@ export class ProjectComponent {
 
 
   getAllManager() {
-    this.apiService.getAllUserByRole("Manager").subscribe(res => {
+    this.apiService.getAllUserByRole(Role.Manager).subscribe(res => {
       console.log(res)
-      this.users = JSON.parse(res);
+      this.users = JSON.parse(res).data;
     })
   }
 
   getProject() {
-    let user = localStorage.getItem('user')
-    if (user) {
-      user = JSON.parse(user) as any
-      this.userDetails = user;
-      console.log(user,"user details")
-    }
-      console.log(this.userDetails.id)
+    console.log("getProject")
       this.apiService.getProject().subscribe(project => {
         console.log(project)
         this.dataSource = project.items
       });
-    
-
   }
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -59,7 +51,8 @@ export class ProjectComponent {
   }
 
   submitForm() {
-    console.log("Submit Form");
+    console.log("Submit Form",this.form.valid);
+    console.log(this.form.value);
     if (this.form.valid) {
       if (!this.editDataId) {
         this.apiService.postProject(this.form.value).subscribe(data => {
@@ -96,12 +89,16 @@ export class ProjectComponent {
   }
 
   isAdmin(): boolean {
-    const userRole = this.authorizationService.getCurrentUser()?.role;
-    return userRole == Role.Admin;
+   
+    const admin = this.authorizationService.hasRoles(Role.Admin);
+
+    return admin;
   }
   isAuditor(): boolean {
-    const userRole = this.authorizationService.getCurrentUser()?.role;
-    return userRole === Role.Auditor || userRole === Role.Admin;
+    const auditor = this.authorizationService.hasRoles(Role.Auditor);
+    const admin = this.authorizationService.hasRoles(Role.Admin);
+
+    return admin || auditor;
   }
 
   navigateTo(id: any) {

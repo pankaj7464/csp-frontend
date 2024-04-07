@@ -81,7 +81,7 @@ export class ApiService {
   postRole( data: any): Observable<any> {
     this.showLoader();
     return this.http
-      .post<any>(this.apiUrl + 'role/',data, {
+      .post<any>(this.apiUrl + 'user/role?roleName='+data,{} ,{
         responseType: 'text' as 'json',
       })
       .pipe(finalize(() => {
@@ -104,7 +104,7 @@ export class ApiService {
   deleteRoles(id: any): Observable<any> {
     this.showLoader();
     return this.http
-      .delete<any>(this.apiUrl + 'role/'+id, {
+      .delete<any>(this.apiUrl + 'user/role/'+id, {
         responseType: 'text' as 'json',
       })
       .pipe(finalize(() => {
@@ -126,10 +126,21 @@ export class ApiService {
   }
   // Register API services
 
-  register(data: any): Observable<any> {
+  createUser(data: any): Observable<any> {
     this.showLoader();
     return this.http
       .post<any>(this.apiUrl + 'user', data, {
+        responseType: 'text' as 'json',
+      })
+      .pipe(finalize(() => {
+        this.hideLoader();
+      }));
+  }
+
+  deleteUser(id: any): Observable<any> {
+    this.showLoader();
+    return this.http
+      .delete<any>(this.apiUrl + 'user/'+id, {
         responseType: 'text' as 'json',
       })
       .pipe(finalize(() => {
@@ -485,7 +496,7 @@ export class ApiService {
     console.log(data);
     this.showLoader();
     return this.http
-      .post<any>(environment.API_URL + `/assign-role?userId=${data.userId}&roleId=${data.roleId}`, {}, {
+      .post<any>(this.apiUrl + `user/assign-role`, data, {
         responseType: 'text' as 'json',
       })
       .pipe(finalize(() => {
@@ -693,6 +704,7 @@ export class ApiService {
         this.hideLoader();
       }));
   }
+  
   getProject(): Observable<any> {
     
     this.showLoader();
@@ -769,10 +781,10 @@ export class ApiService {
         this.hideLoader();
       }));
   }
-  getAllProject(): Observable<any[]> {
+  getAllProject(): Observable<any> {
     this.showLoader();
     return this.http
-      .get<any[]>(this.apiUrl + 'project')
+      .get<any>(this.apiUrl + 'project')
       .pipe(finalize(() => {
         this.hideLoader();
       }));

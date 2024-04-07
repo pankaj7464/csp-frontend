@@ -31,8 +31,8 @@ export class RoleEditModalComponent {
   getAllRole() {
     this.apiService.getAllRole().subscribe((res) => {
       console.log(res);
-      res = JSON.parse(res);
-      this.roles = res.items;
+      res = JSON.parse(res)?.data;
+      this.roles = res;
     });
   }
   onSubmit(): void {
