@@ -41,7 +41,7 @@
 </form>
 
 <div class="mat-elevation-z8 mat-table-responsive">
-  <table mat-table [dataSource]="dataSource">
+  <table mat-table [dataSource]="dataSource" >
     <!-- Name Column -->
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef>Name</th>
@@ -61,24 +61,24 @@
         <button
           [disabled]="!isAuditor()"
           mat-icon-button
-          (click)="editItem(element)"
+          (click)="editItem(element,$event)"
         >
           <mat-icon>edit</mat-icon>
         </button>
         <button
           [disabled]="!isAuditor()"
           mat-icon-button
-          (click)="deleteItem(element.id)"
+          (click)="deleteItem(element.id,$event)"
         >
           <mat-icon>delete</mat-icon>
         </button>
-        <button mat-icon-button (click)="navigateTo(element.id)">
+        <button mat-icon-button >
           <mat-icon>remove_red_eye</mat-icon>
         </button>
       </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row;index as rowIndex; columns: displayedColumns"  (click)="navigateTo(row.id)" class="cursor-pointer  hover:bg-gray-200"></tr>
   </table>
 </div>

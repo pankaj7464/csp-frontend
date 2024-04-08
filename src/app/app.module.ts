@@ -43,6 +43,7 @@ import { NotVerifiedComponent } from './pages/not-verified/not-verified.componen
 
 import { TokenInterceptor } from './services/token-interceptor';
 import { AddRoleComponent } from './components/add-role/add-role.component';
+import { ErrorPageComponent } from './error-page/error-page.component';
 
 
 @NgModule({
@@ -69,7 +70,8 @@ import { AddRoleComponent } from './components/add-role/add-role.component';
     RoleEditModalComponent,
     RoleManagementComponent,
     NotVerifiedComponent,
-    AddRoleComponent
+    AddRoleComponent,
+    ErrorPageComponent
   ],
   imports: [
     BrowserModule,

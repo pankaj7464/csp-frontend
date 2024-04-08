@@ -8,10 +8,18 @@
   <div
     class="flex justify-between flex-col md:flex-row items-center w-full mb-4 gap-4"
   >
-    <!-- Level -->
+    <!-- Title -->
     <mat-form-field class="flex-1 w-full">
       <mat-label>Title</mat-label>
-      <input matInput formControlName="title" />
+   
+        <mat-select formControlName="title">
+          <mat-option
+            *ngFor="let role of roles; let idx = index"
+            [value]="role.id"
+            >{{ role.name }}</mat-option
+          >
+        </mat-select>
+    
     </mat-form-field>
     <mat-form-field class="flex-1 w-full">
       <mat-label>Name</mat-label>

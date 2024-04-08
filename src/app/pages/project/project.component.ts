@@ -37,10 +37,10 @@ export class ProjectComponent {
 
   getProject() {
     console.log("getProject")
-      this.apiService.getProject().subscribe(project => {
-        console.log(project)
-        this.dataSource = project.items
-      });
+    this.apiService.getProject().subscribe(project => {
+      console.log(project)
+      this.dataSource = project.items
+    });
   }
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -51,7 +51,7 @@ export class ProjectComponent {
   }
 
   submitForm() {
-    console.log("Submit Form",this.form.valid);
+    console.log("Submit Form", this.form.valid);
     console.log(this.form.value);
     if (this.form.valid) {
       if (!this.editDataId) {
@@ -70,13 +70,14 @@ export class ProjectComponent {
 
     }
   }
-  editItem(data: any) {
-
+  editItem(data: any, event: MouseEvent) {
+    event.stopPropagation();
     this.editDataId = data.id;
 
     this.form.patchValue(data);
   }
-  deleteItem(id: any) {
+  deleteItem(id: any, event: MouseEvent) {
+    event.stopPropagation();
     this.apiService.deleteProject(id).subscribe(
       (res) => {
         this.getProject()
@@ -89,7 +90,7 @@ export class ProjectComponent {
   }
 
   isAdmin(): boolean {
-   
+
     const admin = this.authorizationService.hasRoles(Role.Admin);
 
     return admin;

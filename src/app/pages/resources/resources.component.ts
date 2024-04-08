@@ -9,6 +9,7 @@ export interface Resources {
   startDate: Date;
   endDate: Date;
   comment: string;
+
 }
 @Component({
   selector: 'app-resources',
@@ -17,11 +18,12 @@ export interface Resources {
 })
 export class ResourcesComponent {
   dataSource: Resources[] = [
-   
+
   ];
 
   displayedColumns: string[] = ['role', 'start', 'end', 'allocationPercentage', 'action'];
   form!: FormGroup;
+  roles!: any[];
 
   constructor(private apiService: ApiService, private route: ActivatedRoute, private fb: FormBuilder, private authorizationService: AuthorizationService) {
     let id = localStorage.getItem('projectId');
@@ -40,7 +42,7 @@ export class ResourcesComponent {
   editDataId!: string;
   projectId!: string;
   ngOnInit() {
-
+    this.getRoles();
   }
   getResources(projectId: string) {
     this.apiService.getResources(projectId).subscribe((res) => {
@@ -49,6 +51,14 @@ export class ResourcesComponent {
     });
   }
 
+
+  getRoles() {
+    this.apiService.getAllRole().subscribe((data) => {
+      data = JSON.parse(data);
+      console.log(data)
+      this.roles = data?.data;
+    });
+  }
   submitForm() {
     console.log(this.form.value)
     if (this.form.valid) {
@@ -88,7 +98,7 @@ export class ResourcesComponent {
       }
     );
   }
-  
+
   isManager(): boolean {
     const manager = this.authorizationService.hasRoles(Role.Manager);
     const admin = this.authorizationService.hasRoles(Role.Admin);

@@ -10,6 +10,7 @@ import { ProfileModalComponent } from '../components/profile-modal/profile-modal
 import { AuthorizationService, Role } from '../services/authorization.service';
 
 import { environment } from '../../environments/environment.development';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -19,76 +20,50 @@ import { environment } from '../../environments/environment.development';
 export class DashboardComponent {
   userDetail!: any
   isLoading: boolean;
-  roles!: string[];
-  
-  
+  roles: string[] = [];
+
+  userSubscription!: Subscription;
+
   currentUrl: string;
-  constructor(public dialog: MatDialog, public router: Router, public apiService: ApiService, private cdr: ChangeDetectorRef, @Inject(DOCUMENT) public document: Document,
-    public authService: AuthService, public authorizationService: AuthorizationService) {
-    this.currentUrl = router.url
-    
+  constructor(public dialog: MatDialog,
+    public router: Router,
+    public apiService: ApiService,
+    private cdr: ChangeDetectorRef,
+    @Inject(DOCUMENT) public document: Document,
+    public authService: AuthService,
+    public authorizationService: AuthorizationService) {
+
+    this.currentUrl = router.url;
 
     this.authService.idTokenClaims$.subscribe(data => {
-      console.log(data);
-      this.apiService.exchangeToken(data?.__raw).subscribe(data => {
-        console.log(data);
-        localStorage.setItem("user", JSON.stringify(data));
-        authService.user$.subscribe(userDetail => {
-          this.userDetail = userDetail;
-        });
+      this.apiService.exchangeToken(data?.__raw).subscribe(
+        data => {
+          localStorage.setItem("user", JSON.stringify(data));
+          this.roles = this.authorizationService.getCurrentUser()?.roles;
+          this.authorizationService.updateUser(data);
+        },
+        error => {
+          console.error("Error exchanging token:", error);
+          this.router.navigate(['/error-page']); 
+        }
+      );
+    });
 
-      })
-    })
-
-    // this.authService.user$.subscribe(userDetail => {
-    //   this.userDetail = userDetail;
-
-
-    //   this.apiService.login({ email: this.userDetail.email, username: this.userDetail.sub }).subscribe(user => {
-    //     user = JSON.parse(user);
-
-    //     if (user.isSuccess == 1) {
-    //       console.log(user);
-    //       user = user.user
-    //       this.apiService.showSuccessToast("User successfully logged in")
-    //       localStorage.setItem("user", JSON.stringify(user));
-    //       localStorage.setItem("role", JSON.stringify(user?.role));
-    //       this.userDetail = { ...userDetail, roleId: user?.role };
-    //     }
-    //     else if (user.isSuccess == 2) {
-    //       this.apiService.showSuccessToast("You are not verified yet")
-    //       this.router.navigate(["not-verified"])
-    //       this.logout();
-    //     }
-    //     else {
-    //       this.apiService.register({
-    //         name: this.userDetail.nickname,
-    //         username: this.userDetail.sub,
-    //         email: this.userDetail.email
-    //       }).subscribe(user => {
-    //         console.log(user);
-    //         this.apiService.showSuccessToast("Wait until the user is confirmed")
-    //         this.logout();
-
-    //       },
-    //         error => {
-
-    //         }
-    //       );
-
-    //     }
-    //   },
-    //     error => {
-    //       console.log(error);
-    //     }
-    //   )
-    // });
     this.isLoading = false;
   }
 
 
+  ngOnDestroy() {
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
+    }
+  }
   ngOnInit(): void {
-    this.roles = this.authorizationService.getCurrentUser()?.roles;
+    this.userSubscription = this.authorizationService.user$.subscribe((user: any) => {
+      this.roles = user.data.roles;
+      this.userDetail = user.data;
+      console.log(this.userDetail)
+    });
     this.apiService.isLoading().subscribe(isLoading => {
       this.isLoading = isLoading;
     });
@@ -122,7 +97,7 @@ export class DashboardComponent {
 
 
   ngAfterViewInit() {
-
+    this.isAdmin()
   }
   logout(flag?: boolean) {
     this.authService.logout({
@@ -138,7 +113,8 @@ export class DashboardComponent {
 
 
   isAdmin(): boolean {
-    return this.authorizationService.hasRoles("admin");
+    console.log(this.authorizationService.hasRoles("admin"))
+    return this.authorizationService.hasRoles("admin") || this.authorizationService.getCurrentUser()?.roles.includes("admin");
   }
   openDialog() {
     this.dialog.open(ProfileModalComponent);

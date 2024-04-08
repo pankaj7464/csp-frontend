@@ -22,10 +22,11 @@ import { UserManagementComponent } from './pages/user-management/user-management
 import { RoleManagementComponent } from './pages/role-management/role-management.component';
 import { AdminGuard } from './services/AdminGuard';
 import { NotVerifiedComponent } from './pages/not-verified/not-verified.component';
+import { ErrorPageComponent } from './error-page/error-page.component';
 const routes: Routes = [
   { path: "login", component: LoginComponent },
   { path: "not-verified", component: NotVerifiedComponent },
-
+  { path: "error-page", component: ErrorPageComponent },
   {
     path: 'dashboard',
     component: DashboardComponent,

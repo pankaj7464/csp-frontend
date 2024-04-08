@@ -13,9 +13,15 @@
     </mat-form-field>
 
     <!-- Role -->
-    <mat-form-field class="flex-1">
+    <mat-form-field class="flex-1 w-full">
       <mat-label>Role</mat-label>
-      <input matInput formControlName="role" type="text" />
+      <mat-select formControlName="role">
+        <mat-option
+          *ngFor="let role of roles; let idx = index"
+          [value]="role.name"
+          >{{ role.name }}</mat-option
+        >
+      </mat-select>
     </mat-form-field>
 
     <!-- Phase Number -->

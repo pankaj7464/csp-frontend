@@ -16,6 +16,7 @@ export class StakeholderComponent {
   displayedColumns: string[] = ['title', 'name', 'email', 'Actions'];
   dataSource!: any[];
   projectId!: string;
+  roles: any[] = [];
   constructor(private route: ActivatedRoute, private apiService: ApiService, private fb: FormBuilder, private authorizationService: AuthorizationService) {
     let id = localStorage.getItem('projectId');
     if (id) {
@@ -27,6 +28,17 @@ export class StakeholderComponent {
       title: ['', Validators.required],
       email: ['', [Validators.required, Validators.email, ]],
       projectId: [this.projectId, Validators.required],
+    });
+    this.getRoles();
+  }
+
+
+  getRoles() {
+    this.apiService.getAllRole().subscribe((data) => {
+      data = JSON.parse(data);
+      console.log(data)
+      this.roles = data?.data;
+      console.log(this.roles);
     });
   }
 

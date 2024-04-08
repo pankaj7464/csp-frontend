@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 export interface User {
   id: string;
   name: string;
@@ -19,10 +20,28 @@ export enum Role {
 export class AuthorizationService {
 
   roles!: any[];
+  private userSubject = new Subject<string[]>();
+
+  user$ = this.userSubject.asObservable();
+
+
+
+
   constructor() {
-    this.roles = JSON.parse(localStorage.getItem('user') as any)?.data?.roles;
-    console.log(this.roles);
+    const user = localStorage.getItem('user');
+    if (user) {
+      this.updateUser(JSON.parse(user));
+    }
+
   }
+
+  // Method to update user role
+  updateUser(user: any) {
+    localStorage.setItem('user', JSON.stringify(user)); // Update localStorage
+    this.userSubject.next(user); // Notify subscribers
+    this.roles = user?.data?.roles;
+  }
+
 
   hasRoles(r: string): boolean {
     return this.roles.includes(r);

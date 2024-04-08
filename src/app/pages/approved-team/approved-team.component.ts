@@ -17,6 +17,7 @@ export interface Resource {
 })
 export class ApprovedTeamComponent {
   form!: FormGroup;
+  roles!: any[];
   dataSource: Resource[] = [
     { noOfResources: 5, role: 'Developer', phaseNo: 1, duration: '3 months', availability: 'Full-time', projectId: '12345' },
     { noOfResources: 3, role: 'Tester', phaseNo: 2, duration: '2 months', availability: 'Part-time', projectId: '54321' },
@@ -44,9 +45,17 @@ export class ApprovedTeamComponent {
 
   ngOnInit(): void {
     this.getApprovedTeam()
+    this.getRoles();
 
   }
 
+  getRoles() {
+    this.apiService.getAllRole().subscribe((data) => {
+      data = JSON.parse(data);
+      console.log(data)
+      this.roles = data?.data;
+    });
+  }
   getApprovedTeam() {
     this.apiService.getApprovedTeam(this.projectId).subscribe(team => {
       this.dataSource = team;
@@ -57,6 +66,7 @@ export class ApprovedTeamComponent {
     console.log("Submit form",this.form.value);
     if (this.form.valid) {
       if (!this.editDataId) {
+        console.log("Post Approved Team",this.form.value);
         this.apiService.postApprovedTeam(this.form.value).subscribe((res) => {
           this.getApprovedTeam()
           this.apiService.showSuccessToast('Team Added Successfully');
@@ -94,8 +104,10 @@ export class ApprovedTeamComponent {
   }
 
   isManager(): boolean {
-    const userRole = this.authorizationService.getCurrentUser()?.role;
-    return userRole === Role.Manager || userRole === Role.Admin;
+    const manager = this.authorizationService.hasRoles(Role.Manager);
+    const admin = this.authorizationService.hasRoles(Role.Admin);
+
+    return admin || manager;
   }
 
 }

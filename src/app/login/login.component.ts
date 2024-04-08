@@ -1,5 +1,5 @@
 
-import { Component,  ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatTabGroup } from '@angular/material/tabs';
 import { Router } from '@angular/router';
@@ -27,55 +27,28 @@ export class LoginComponent {
   constructor(private authorizationService: AuthorizationService, private apiService: ApiService, private fb: FormBuilder, private auth: AuthService, private router: Router, private authService: AuthService) {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
-      email: ['', [Validators.required,Validators.email]],
+      email: ['', [Validators.required, Validators.email]],
     });
 
-    
+
     this.registerForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       userName: ['', Validators.required],
       name: ['', Validators.required],
     });
     this.auth.isAuthenticated$.subscribe(auth => {
-   
-      this.auth.getAccessTokenSilently().subscribe(data => {console.log(data)})
       if (auth) {
+        // User is authenticated, perform login
         this.router.navigate(['dashboard/project']);
+      } else {
+        // User is not authenticated, perform login
+        this.auth.loginWithRedirect();
       }
-    })
+    });
 
   }
-  ngOnInit() {
-    this.auth.loginWithRedirect()
-  }
-  Login() {
-    this.auth.loginWithRedirect()
-  }
+ 
 
-  // Function to handle login form submission
-  ManualLogin() {
-    console.log('Login Form Submitted!', this.loginForm.value);
-    if (this.loginForm.valid) {
-      this.apiService.login(this.loginForm.value).subscribe(data => {
-        data = JSON.parse(data)
-        console.log(data);
-        if (data.isSuccess) {
-          this.apiService.showSuccessToast(data.message)
-            this.router.navigate(['dashboard/project']);
-        }
-        else {
-          this.apiService.showSuccessToast(data.message)
-        }
-
-     
-      },
-        error => {
-          this.apiService.showSuccessToast(" There was an error")
-        }
-      )
-    } else {
-      // Form is invalid, display error or take appropriate action
-    }
-  }
+ 
 
 }

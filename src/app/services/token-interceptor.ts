@@ -9,7 +9,8 @@ export class TokenInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler) {
     // Get token from localStorage
-    const token = localStorage.getItem('token');
+    const token =JSON.parse(localStorage.getItem('user')as any)?.token;
+
     console.log(token)
     // Clone the request and attach the Bearer token if available
     if (token) {
