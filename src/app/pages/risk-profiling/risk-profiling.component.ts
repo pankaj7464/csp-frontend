@@ -15,7 +15,12 @@ export class RiskProfileComponent implements OnInit {
     'riskType',
     'severity',
     'impact',
+    'status',
+    'remedialSteps',
+    'description',
+    'closureDate',
     'Actions',
+
   ];
   dataSource!: any[];
   form!: FormGroup;
@@ -34,6 +39,10 @@ export class RiskProfileComponent implements OnInit {
       riskType: ['', Validators.required],
       severity: ['', Validators.required],
       impact: ['', Validators.required],
+      status: ['', Validators.required],
+      remedialSteps: ['', Validators.required],
+      description: ['', Validators.required],
+      closureDate: ['', Validators.required],
    
     });
   }

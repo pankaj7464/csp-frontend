@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { VersionHistoryComponent } from './version-history.component';
+import { LoaderComponent } from './loader.component';
 
-describe('VersionHistoryComponent', () => {
-  let component: VersionHistoryComponent;
-  let fixture: ComponentFixture<VersionHistoryComponent>;
+describe('LoaderComponent', () => {
+  let component: LoaderComponent;
+  let fixture: ComponentFixture<LoaderComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [VersionHistoryComponent]
+      declarations: [LoaderComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(VersionHistoryComponent);
+    fixture = TestBed.createComponent(LoaderComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

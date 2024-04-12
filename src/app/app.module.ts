@@ -44,6 +44,8 @@ import { NotVerifiedComponent } from './pages/not-verified/not-verified.componen
 import { TokenInterceptor } from './services/token-interceptor';
 import { AddRoleComponent } from './components/add-role/add-role.component';
 import { ErrorPageComponent } from './error-page/error-page.component';
+import { LoaderComponent } from './components/loader/loader.component';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 
 @NgModule({
@@ -71,7 +73,8 @@ import { ErrorPageComponent } from './error-page/error-page.component';
     RoleManagementComponent,
     NotVerifiedComponent,
     AddRoleComponent,
-    ErrorPageComponent
+    ErrorPageComponent,
+    LoaderComponent
   ],
   imports: [
     BrowserModule,
@@ -84,6 +87,7 @@ import { ErrorPageComponent } from './error-page/error-page.component';
     MatSidenavModule,
     MatTableModule,
     AngularMaterialModule,
+    NgxSkeletonLoaderModule ,
 
 
 

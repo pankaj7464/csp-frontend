@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { AuthService } from '@auth0/auth0-angular';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-error-page',
@@ -6,5 +8,16 @@ import { Component } from '@angular/core';
   styleUrl: './error-page.component.css'
 })
 export class ErrorPageComponent {
+constructor(private authService: AuthService) {
+ 
+ }
 
+ Logout() {
+  localStorage.removeItem("user"  )
+  this.authService.logout({
+    logoutParams: {
+      returnTo: `${environment.clientURL}/login`
+    }
+  });
+ }
 }

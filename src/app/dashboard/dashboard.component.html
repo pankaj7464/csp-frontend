@@ -1,7 +1,4 @@
-
-<header
-  class="bg-[#3f51b5] py-3 px-6 flex justify-between items-center gap-10 mb-4"
->
+<header class="bg-[#3f51b5] py-3 px-6 flex justify-between items-center gap-10 mb-4">
   <!-- Left side: Project name -->
   <div class="flex items-center">
     <span class="text-white text-lg font-semibold">CSP</span>
@@ -9,27 +6,25 @@
 
   <!-- Center: Search box -->
   <div class="flex-grow flex items-center justify-center">
-    <input
-      class="flex-grow bg-[#6876c2] text-white rounded py-1 px-3 focus:outline-none"
-      type="text"
-      placeholder="Search..."
-    />
+    <input class="flex-grow bg-[#6876c2] text-white rounded py-1 px-3 focus:outline-none" type="text"
+      placeholder="Search..." />
   </div>
 
   <!-- Right side: User -->
   <div>
     <div [matMenuTriggerFor]="menu" class="flex items-center cursor-pointer">
-      
+
       <div class="w-8 h-8 rounded-full border border-gray-300 bg-opacity-50  flex items-center justify-center mx-4">
-        <p class="text-white text-xl font-semibold m-0 p-0 contents" [class.opacity-100]="userDetail?.userName" [class.opacity-0]="!userDetail?.userName">
+        <p class="text-white text-xl font-semibold m-0 p-0 contents" [class.opacity-100]="userDetail?.userName"
+          [class.opacity-0]="!userDetail?.userName">
           {{ userDetail?.userName ? userDetail?.userName.charAt(0).toUpperCase() : '' }}
         </p>
       </div>
-      
+
       <div class="flex flex-col">
         <span class="text-[.8rem] font-bold">{{ userDetail?.userName }}</span>
         <span class="text-[.8rem]">
-         {{roles[0]}}
+          {{roles[0]}}
         </span>
       </div>
     </div>
@@ -44,33 +39,28 @@
   <mat-drawer #drawer mode="side" opened>
     <!-- Center: Buttons -->
     <div class="flex gap-4 flex-col m-2">
-      <button
-        color="primary"
-        (click)="navigateTo(Navigations[0].path)"
-        class="h-10 bg-gray-100 hover:bg-gray-600 py-2 px-4 rounded focus:outline-none focus:shadow-outline lg:min-w-[10rem]"
-      >
+      <button color="primary" (click)="navigateTo(Navigations[0].path)"
+        class="h-10 bg-gray-100 hover:bg-gray-600 py-2 px-4 rounded focus:outline-none focus:shadow-outline lg:min-w-[10rem]">
         {{ Navigations[0].displayName }}
       </button>
-      <button
-        *ngIf="roles?.includes('admin')"
-        color="primary"
-        (click)="navigateTo(Navigations[1].path)"
-        class="h-10 bg-gray-100 hover:bg-gray-600 py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-      >
+      <button *ngIf="roles?.includes('admin')" color="primary" (click)="navigateTo(Navigations[1].path)"
+        class="h-10 bg-gray-100 hover:bg-gray-600 py-2 px-4 rounded focus:outline-none focus:shadow-outline">
         {{ Navigations[1].displayName }}
       </button>
-      <button
-      *ngIf="roles?.includes('admin')"
-        color="primary"
-        (click)="navigateTo(Navigations[2].path)"
-        class="h-10 bg-gray-100 hover:bg-gray-600 py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-      >
+      <button *ngIf="roles?.includes('admin')" color="primary" (click)="navigateTo(Navigations[2].path)"
+        class="h-10 bg-gray-100 hover:bg-gray-600 py-2 px-4 rounded focus:outline-none focus:shadow-outline">
         {{ Navigations[2].displayName }}
       </button>
     </div>
   </mat-drawer>
 
-  <div class="m-2 p-2">
+  <div class="m-2 p-2 relative">
+    <div
+      class="absolute flex items-center justify-center w-8 h-8 bg-gray-200 left-[-18px] top-[-8px] rounded-full cursor-pointer hover:bg-gray-300 transition-colors"
+      [class.rotate-180]="isSidebarOpen" (click)="toggleSidebar()">
+      <mat-icon class="text-gray-600">chevron_right</mat-icon>
+    </div>
+
     <div *ngIf="shouldShowTabs()">
       <app-tab></app-tab>
     </div>

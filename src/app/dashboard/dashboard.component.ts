@@ -1,5 +1,5 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ViewChild, viewChild } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
 import { NavigationEnd, Router } from '@angular/router';
 import 'jspdf-autotable';
@@ -11,6 +11,7 @@ import { AuthorizationService, Role } from '../services/authorization.service';
 
 import { environment } from '../../environments/environment.development';
 import { Subscription } from 'rxjs';
+import { MatDrawer } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-dashboard',
@@ -21,9 +22,9 @@ export class DashboardComponent {
   userDetail!: any
   isLoading: boolean;
   roles: string[] = [];
-
+  @ViewChild('drawer') drawer!: MatDrawer;
   userSubscription!: Subscription;
-
+  isSidebarOpen: boolean = true;
   currentUrl: string;
   constructor(public dialog: MatDialog,
     public router: Router,
@@ -34,13 +35,13 @@ export class DashboardComponent {
     public authorizationService: AuthorizationService) {
 
     this.currentUrl = router.url;
-
     this.authService.idTokenClaims$.subscribe(data => {
       this.apiService.exchangeToken(data?.__raw).subscribe(
         data => {
           localStorage.setItem("user", JSON.stringify(data));
           this.roles = this.authorizationService.getCurrentUser()?.roles;
           this.authorizationService.updateUser(data);
+
         },
         error => {
           console.error("Error exchanging token:", error);
@@ -99,7 +100,17 @@ export class DashboardComponent {
   ngAfterViewInit() {
     this.isAdmin()
   }
+
+
+
+  toggleSidebar() {
+
+    this.isSidebarOpen = !this.isSidebarOpen;
+    this.drawer.toggle();
+  }
+
   logout(flag?: boolean) {
+    localStorage.removeItem("user"  )
     this.authService.logout({
       logoutParams: {
         returnTo: flag ? `${environment.clientURL}/login` : `${environment.clientURL}/not-verified`

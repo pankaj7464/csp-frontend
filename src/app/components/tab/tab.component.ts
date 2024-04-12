@@ -1,7 +1,6 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, Inject } from '@angular/core';
+import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
-import { OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { jsPDF } from 'jspdf';
 import 'jspdf-autotable';
@@ -15,16 +14,29 @@ import { ApiService } from '../../services/api.service';
   styleUrl: './tab.component.css'
 })
 export class TabComponent {
+  project: any; 
+  @ViewChild('tabContainer')
+  tabContainer!: ElementRef;
   constructor(public router: Router, public apiService: ApiService, private cdr: ChangeDetectorRef, @Inject(DOCUMENT) public document: Document,
     public authService: AuthService) {
-
+   
+    console.log(this.project)
   }
 
-
+  ngOnInit() {
+    this.project =   JSON.parse(localStorage.getItem('project')as any);
+  }
 
   navigateTo(path: any) {
     this.router.navigateByUrl("/dashboard/" + path);
   }
+  scrollLeft() {
+    this.tabContainer.nativeElement.scrollLeft -= 200; // Adjust the scroll amount as needed
+ }
+
+ scrollRight() {
+    this.tabContainer.nativeElement.scrollLeft += 200; // Adjust the scroll amount as needed
+ }
 
 
   tabs: { path: string; displayName: string }[] = [
@@ -73,7 +85,10 @@ export class TabComponent {
 
                   }
                   case "auditHistory": {
-                    item.reviewedBy = "Test user"
+                   
+                    item.status = this.apiService.AuditStatuses[item.status];
+                    item.reviewedBy = item?.reviewedByUser?.name
+                    item.reviewedByUser = item?.reviewedByUser?.name
                     item.dateOfAudit = new Date(item.dateOfAudit).toLocaleDateString();
                     break;
                   }

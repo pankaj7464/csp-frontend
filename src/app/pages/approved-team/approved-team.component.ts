@@ -35,7 +35,7 @@ export class ApprovedTeamComponent {
     }
     this.form = this.fb.group({
       noOfResources: ['', [Validators.required, Validators.min(1)]],
-      role: ['', Validators.required],
+      roleId: ['', Validators.required],
       phaseNo: ['', [Validators.required, Validators.min(1)]],
       duration: ['', [Validators.required, Validators.min(1)]],
       availability: ['', Validators.required],

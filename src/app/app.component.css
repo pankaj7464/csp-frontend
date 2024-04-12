@@ -28,6 +28,9 @@
     overflow: hidden;
   }
 
+  .loader-backdrop{
+    /* backdrop-filter: blur(1px); */
+  }
   .loader::before {
     content: '';
     display: block;

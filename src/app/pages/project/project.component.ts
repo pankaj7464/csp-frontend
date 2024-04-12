@@ -4,6 +4,7 @@ import { AuthorizationService, Role } from '../../services/authorization.service
 import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 export interface Project {
+  id: string;
   name: string;
   description: string;
 }
@@ -23,8 +24,7 @@ export class ProjectComponent {
   users!: any[];
   userDetails!: any;
   constructor(private fb: FormBuilder, private authorizationService: AuthorizationService, private router: Router, private apiService: ApiService) {
-    this.getProject()
-    this.getAllManager()
+   this.getProject()
   }
 
 
@@ -48,6 +48,11 @@ export class ProjectComponent {
       description: ['', Validators.required],
       managerId: ['', Validators.required],
     });
+
+    this.getAllManager()
+  }
+  ngafterViewInit() {
+    this.getProject()
   }
 
   submitForm() {
@@ -105,6 +110,8 @@ export class ProjectComponent {
   navigateTo(id: any) {
     console.log("navigateTo")
     localStorage.setItem('projectId', id)
+    console.log(this.dataSource)
+    localStorage.setItem("project",JSON.stringify(this.dataSource.find(x=>x.id == id)))
     this.router.navigate(["dashboard/audit-history"]);
     console.log("nexrt")
   }

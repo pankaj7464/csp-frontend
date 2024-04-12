@@ -32,9 +32,9 @@ export class ResourcesComponent {
     }
     this.getResources(this.projectId);
     this.form = this.fb.group({
-      role: ['', Validators.required],
-      start: ['', Validators.required],
-      end: ['', Validators.required],
+      roleId: ['', Validators.required],
+      startDate: ['', Validators.required],
+      endDate: ['', Validators.required],
       allocationPercentage: ['', Validators.required],
       projectId: [id || '', Validators.required],
     });

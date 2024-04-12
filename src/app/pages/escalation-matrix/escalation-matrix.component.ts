@@ -27,6 +27,7 @@ export class EscalationMatrixComponent implements OnInit {
   levels: string[] = this.apiService.levels;
   projects: any[] = ['Project 1', 'Project 2'];
   dataSource!: any[]
+  users: any[] = [];
   constructor(private route: ActivatedRoute, private apiService: ApiService, private fb: FormBuilder, private authorizationService: AuthorizationService) {
     let id = localStorage.getItem('projectId');
     if (id) {
@@ -39,8 +40,18 @@ export class EscalationMatrixComponent implements OnInit {
     this.form = this.fb.group({
       level: ['', Validators.required],
       escalationType: ['', Validators.required],
-      responsiblePerson: ['', Validators.required],
+      responsiblePersonId: ['', Validators.required],
       projectId: [id ? id : '', Validators.required],
+    });
+
+    this.getAllUsers();
+  }
+
+  getAllUsers() {
+    this.apiService.getAllUser().subscribe((data) => {
+      data = JSON.parse(data);
+      this.users = data?.data;
+      console.log(this.users);
     });
   }
 

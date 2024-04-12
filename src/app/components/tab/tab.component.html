@@ -1,5 +1,8 @@
 <div class="flex justify-between">
-  <button mat-raised-button type="button" mat-button>Toggle</button>
+  <div class="header">
+    <span class="font-bold  text-[1.5rem] ml-4">{{ project?.name }}</span >
+  </div>
+  
   <!-- Submit Button -->
   <button
     mat-raised-button
@@ -12,14 +15,33 @@
     Export PDF
   </button>
 </div>
-<div class="flex justify-between items-center border-b-2 overflow-y-auto">
-  @for (tab of tabs; track $index) {
-  <span
-    class="p-2 cursor-pointer whitespace-nowrap"
-    [routerLink]="tab.path"
-    routerLinkActive="active"
-    (click)="navigateTo(tab.path)"
-    >{{ tab.displayName }}</span
-  >
-  }
-</div>
+<div class="flex justify-between items-center border-b-2 overflow-hidden relative">
+  <button class="absolute left-0 top-0 h-full bg-transparent border-none outline-none px-2 text-blue-700" (click)="scrollLeft()">
+     <!-- Material UI icon for left scroll -->
+     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+     </svg>
+  </button>
+  <div class="overflow-hidden">
+    <div class="flex-container flex justify-between items-center flex-1 overflow-x-auto w-[92%] mx-auto" #tabContainer>
+      <ng-container *ngFor="let tab of tabs; let i = index">
+        <span
+          class="p-2 cursor-pointer whitespace-nowrap hover:text-blue-700 hover:border-b-2 border-cyan-600"
+          [routerLink]="tab.path"
+          routerLinkActive="active"
+          (click)="navigateTo(tab.path)"
+          >{{ tab.displayName }}</span
+        >
+      </ng-container>
+  </div>
+  </div>
+  <button class="absolute right-0 top-0 h-full bg-transparent border-none outline-none px-2 text-blue-700" (click)="scrollRight()">
+     <!-- Material UI icon for right scroll -->
+     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+     </svg>
+  </button>
+ </div>
+ 
+
+

@@ -1,4 +1,7 @@
 @if(isLoading){
     <div  class="loader sticky right-0   top-0 left-0 z-50"></div>
+    <div class="loader-backdrop absolute flex w-full h-full items-center justify-center  z-40">
+        <app-loader></app-loader>
+    </div>
 }
 <router-outlet></router-outlet>

@@ -17,6 +17,7 @@ export class StakeholderComponent {
   dataSource!: any[];
   projectId!: string;
   roles: any[] = [];
+  users: any[] = [];  
   constructor(private route: ActivatedRoute, private apiService: ApiService, private fb: FormBuilder, private authorizationService: AuthorizationService) {
     let id = localStorage.getItem('projectId');
     if (id) {
@@ -24,15 +25,13 @@ export class StakeholderComponent {
       this.getAllStakeholder(this.projectId);
     }
     this.form = this.fb.group({
-      name: ['', Validators.required],
-      title: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email, ]],
+      roleId: ['', Validators.required],
+      userId: ['', Validators.required],
       projectId: [this.projectId, Validators.required],
     });
     this.getRoles();
+    this.getAllUsers();
   }
-
-
   getRoles() {
     this.apiService.getAllRole().subscribe((data) => {
       data = JSON.parse(data);
@@ -42,6 +41,13 @@ export class StakeholderComponent {
     });
   }
 
+  getAllUsers() {
+    this.apiService.getAllUser().subscribe((data) => {
+      data = JSON.parse(data);
+      this.users = data?.data;
+      console.log(this.users);
+    });
+  }
 
   deleteItem(id: any) {
     this.apiService.deleteStakeholder(id).subscribe(
@@ -58,9 +64,9 @@ export class StakeholderComponent {
   getAllStakeholder(id: string) {
     this.apiService.getAllStakeholder(id).subscribe((res) => {
       this.dataSource = res;
+      console.log(this.dataSource);
     });
   }
-
   editItem(data: any) {
     this.editDataId = data.id;
     this.form.patchValue(data);

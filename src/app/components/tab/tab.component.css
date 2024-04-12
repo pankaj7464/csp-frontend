@@ -2,3 +2,11 @@
     color: #3f51b5;
     border-bottom: 2px solid #3f51b5;
   }
+
+ 
+/* Add a custom scrollbar for horizontal scrolling */
+.flex-container::-webkit-scrollbar {
+  width: 10px; /* Width of the scrollbar */
+  display: none;
+}
+

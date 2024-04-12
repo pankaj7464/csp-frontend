@@ -54,6 +54,13 @@ export class ApiService {
     "OnTrack",
     "SignOffPending"
   ];
+  AuditStatuses: string[] =  [
+    'InProgress',
+    'Completed',
+    'Delayed',
+    'OnTrack',
+    'SignOffPending',
+  ]
   constructor(private http: HttpClient, private snackBar: MatSnackBar) {
   }
 
@@ -179,6 +186,16 @@ export class ApiService {
     this.showLoader();
     return this.http
       .get<any>(this.apiUrl + 'user/users-with-roles', {
+        responseType: 'text' as 'json',
+      })
+      .pipe(finalize(() => {
+        this.hideLoader();
+      }));
+  }
+  getAllUser(): Observable<any> {
+    this.showLoader();
+    return this.http
+      .get<any>(this.apiUrl + 'user/users', {
         responseType: 'text' as 'json',
       })
       .pipe(finalize(() => {

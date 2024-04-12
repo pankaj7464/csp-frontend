@@ -19,17 +19,11 @@ export class AuditHistoryComponent {
     'actionItem',
     'Actions',
   ];
-  dataSource!: ProjectBudget[];
-  statuses: string[] = [
-    'InProgress',
-    'Completed',
-    'Delayed',
-    'OnTrack',
-    'SignOffPending',
-  ];
+  dataSource: any[] = [{},{}];
+  statuses: string[] =this.apiService.AuditStatuses;
   form!: FormGroup;
 
-  auditors: any[] = []
+  auditors: any[] = [{},{}]
 
   projects: any
 
@@ -45,7 +39,7 @@ export class AuditHistoryComponent {
     let id = localStorage.getItem('projectId')
     this.form = this.fb.group({
       dateOfAudit: ['', Validators.required],
-      reviewedBy: ['', Validators.required],
+      reviewerId: ['', Validators.required],
       status: ['', Validators.required],
       reviewedSection: ['', Validators.required],
       commentOrQueries: ['', Validators.required],

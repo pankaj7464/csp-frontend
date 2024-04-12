@@ -15,3 +15,13 @@
     color: red !important;
   }
 
+
+
+  /* component.scss */
+.absolute {
+  position: absolute;
+}
+
+.rotate-180 {
+  transform: rotate(180deg);
+}
