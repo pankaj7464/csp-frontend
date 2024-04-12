@@ -8,21 +8,23 @@ export interface Project {
   name: string;
   description: string;
 }
+
+
 @Component({
   selector: 'app-project',
   templateUrl: './project.component.html',
   styleUrl: './project.component.css'
 })
 export class ProjectComponent {
+  
 
-  form!: FormGroup;
-  dataSource: Project[] = [
-
-  ];
-  editDataId!: string;
-  displayedColumns: string[] = ['name', 'description', 'action'];
-  users!: any[];
-  userDetails!: any;
+    form!: FormGroup;
+    dataSource: Project[] = [];
+    editDataId!: string;
+    displayedColumns: string[] = ['name', 'description','status', 'action'];
+    users!: any[];
+    userDetails!: any;
+    ProjectStatus = ['NotStarted', 'InProgress', 'Completed', 'OnHold']
   constructor(private fb: FormBuilder, private authorizationService: AuthorizationService, private router: Router, private apiService: ApiService) {
    this.getProject()
   }
@@ -46,6 +48,7 @@ export class ProjectComponent {
     this.form = this.fb.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
+      status: [0, Validators.required],
       managerId: ['', Validators.required],
     });
 
@@ -94,25 +97,64 @@ export class ProjectComponent {
     );
   }
 
+  getStatusClass(status: number) {
+    switch (status) {
+      case 0:
+        return 'text-gray-500';
+      case 1:
+        return 'text-blue-500';
+      case 2:
+        return 'text-green-500';
+      case 3:
+        return 'text-orange-500';
+      default:
+        return ''; 
+    }
+  }
+
   isAdmin(): boolean {
-
     const admin = this.authorizationService.hasRoles(Role.Admin);
-
     return admin;
   }
   isAuditor(): boolean {
     const auditor = this.authorizationService.hasRoles(Role.Auditor);
     const admin = this.authorizationService.hasRoles(Role.Admin);
-
     return admin || auditor;
   }
 
   navigateTo(id: any) {
-    console.log("navigateTo")
     localStorage.setItem('projectId', id)
-    console.log(this.dataSource)
     localStorage.setItem("project",JSON.stringify(this.dataSource.find(x=>x.id == id)))
     this.router.navigate(["dashboard/audit-history"]);
-    console.log("nexrt")
+  }
+
+  getMatIconClass(status: number) {
+    switch (status) {
+      case 0:
+        return 'material-icons text-gray-500';
+      case 1:
+        return 'material-icons text-blue-500';
+      case 2:
+        return 'material-icons text-green-500';
+      case 3:
+        return 'material-icons text-orange-500';
+      default:
+        return 'material-icons'; // Default icon class
+    }
+  }
+
+  getMatIconName(status: number) {
+    switch (status) {
+      case 0:
+        return 'schedule';
+      case 1:
+        return 'pending';
+      case 2:
+        return 'check_circle';
+      case 3:
+        return 'pause_circle_filled';
+      default:
+        return 'help_outline'; // Default icon name
+    }
   }
 }

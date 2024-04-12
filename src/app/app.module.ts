@@ -15,7 +15,7 @@ import { RiskProfileComponent } from './pages/risk-profiling/risk-profiling.comp
 import { PhaseMilestoneComponent } from './pages/phase-milestone/phase-milestone.component';
 import { HTTP_INTERCEPTORS, HttpClientModule, provideHttpClient } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import {MatListModule} from '@angular/material/list';
 // Auth 0
 import { AuthModule } from '@auth0/auth0-angular';
 
@@ -46,6 +46,7 @@ import { AddRoleComponent } from './components/add-role/add-role.component';
 import { ErrorPageComponent } from './error-page/error-page.component';
 import { LoaderComponent } from './components/loader/loader.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 @NgModule({
@@ -88,6 +89,8 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
     MatTableModule,
     AngularMaterialModule,
     NgxSkeletonLoaderModule ,
+    MatListModule,
+    MatTooltipModule,
 
 
 
