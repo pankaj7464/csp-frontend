@@ -54,7 +54,7 @@ export class ApiService {
     "OnTrack",
     "SignOffPending"
   ];
-  AuditStatuses: string[] =  [
+  AuditStatuses: string[] = [
     'InProgress',
     'Completed',
     'Delayed',
@@ -83,12 +83,12 @@ export class ApiService {
     });
   }
 
-  
-// Get Role API service 
-  postRole( data: any): Observable<any> {
+
+  // Get Role API service 
+  postRole(data: any): Observable<any> {
     this.showLoader();
     return this.http
-      .post<any>(this.apiUrl + 'user/role?roleName='+data,{} ,{
+      .post<any>(this.apiUrl + 'user/role?roleName=' + data, {}, {
         responseType: 'text' as 'json',
       })
       .pipe(finalize(() => {
@@ -100,7 +100,7 @@ export class ApiService {
   updateRole(id: any, data: any): Observable<any> {
     this.showLoader();
     return this.http
-      .put<any>(this.apiUrl + 'role/'+id,data, {
+      .put<any>(this.apiUrl + 'role/' + id, data, {
         responseType: 'text' as 'json',
       })
       .pipe(finalize(() => {
@@ -111,7 +111,7 @@ export class ApiService {
   deleteRoles(id: any): Observable<any> {
     this.showLoader();
     return this.http
-      .delete<any>(this.apiUrl + 'user/role/'+id, {
+      .delete<any>(this.apiUrl + 'user/role/' + id, {
         responseType: 'text' as 'json',
       })
       .pipe(finalize(() => {
@@ -147,7 +147,7 @@ export class ApiService {
   deleteUser(id: any): Observable<any> {
     this.showLoader();
     return this.http
-      .delete<any>(this.apiUrl + 'user/'+id, {
+      .delete<any>(this.apiUrl + 'user/' + id, {
         responseType: 'text' as 'json',
       })
       .pipe(finalize(() => {
@@ -158,7 +158,7 @@ export class ApiService {
   exchangeToken(__raw: any): Observable<any> {
     this.showLoader();
     return this.http
-      .post<any>(this.apiUrl + 'auth0/exchange-token?token='+__raw, {
+      .post<any>(this.apiUrl + 'user/login-with-auth0Token?token=' + __raw, {
       })
       .pipe(finalize(() => {
         this.hideLoader();
@@ -721,9 +721,9 @@ export class ApiService {
         this.hideLoader();
       }));
   }
-  
+
   getProject(): Observable<any> {
-    
+
     this.showLoader();
     return this.http
       .get<any>(this.apiUrl + 'project')

@@ -31,12 +31,14 @@ export class TabComponent {
     this.router.navigateByUrl("/dashboard/" + path);
   }
   scrollLeft() {
-    this.tabContainer.nativeElement.scrollLeft -= 200; // Adjust the scroll amount as needed
- }
-
- scrollRight() {
-    this.tabContainer.nativeElement.scrollLeft += 200; // Adjust the scroll amount as needed
- }
+    const container = this.tabContainer.nativeElement;
+    container.scrollTo({ left: container.scrollLeft - 200, behavior: 'smooth' });
+  }
+  
+  scrollRight() {
+    const container = this.tabContainer.nativeElement;
+    container.scrollTo({ left: container.scrollLeft + 200, behavior: 'smooth' });
+  }
 
 
   tabs: { path: string; displayName: string }[] = [

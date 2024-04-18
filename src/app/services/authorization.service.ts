@@ -38,8 +38,9 @@ export class AuthorizationService {
   // Method to update user role
   updateUser(user: any) {
     localStorage.setItem('user', JSON.stringify(user)); // Update localStorage
+    console.log('User updated',user);
     this.userSubject.next(user); // Notify subscribers
-    this.roles = user?.data?.roles;
+    this.roles = user?.user?.roles;
   }
 
 
@@ -53,7 +54,7 @@ export class AuthorizationService {
   getCurrentUser(): any {
     let user = localStorage.getItem('user') as any;
     user = JSON.parse(user as any);
-    console.log(user?.data.roles);
-    return user?.data;
+    console.log(user?.user?.roles);
+    return user?.user;
   }
 }

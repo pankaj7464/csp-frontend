@@ -35,17 +35,23 @@ export class DashboardComponent {
     public authorizationService: AuthorizationService) {
 
     this.currentUrl = router.url;
-    this.authService.idTokenClaims$.subscribe(data => {
-      this.apiService.exchangeToken(data?.__raw).subscribe(
+    this.authService.getAccessTokenSilently().subscribe(token => {
+      console.log(token);
+    });
+
+    this.authService.getAccessTokenSilently().subscribe(token => {
+      this.apiService.exchangeToken(token).subscribe(
         data => {
           localStorage.setItem("user", JSON.stringify(data));
+          console.log(data)
           this.roles = this.authorizationService.getCurrentUser()?.roles;
           this.authorizationService.updateUser(data);
-
+          
         },
         error => {
           console.error("Error exchanging token:", error);
-          this.router.navigate(['/error-page']); 
+          this.router.navigate(['/error-page']);
+
         }
       );
     });
@@ -61,8 +67,10 @@ export class DashboardComponent {
   }
   ngOnInit(): void {
     this.userSubscription = this.authorizationService.user$.subscribe((user: any) => {
-      this.roles = user.data.roles;
-      this.userDetail = user.data;
+      
+      console.log(user,"subscribed");
+      this.roles = user?.user?.roles;
+      this.userDetail = user?.user;
       console.log(this.userDetail)
     });
     this.apiService.isLoading().subscribe(isLoading => {
@@ -110,7 +118,7 @@ export class DashboardComponent {
   }
 
   logout(flag?: boolean) {
-    localStorage.removeItem("user"  )
+    localStorage.removeItem("user")
     this.authService.logout({
       logoutParams: {
         returnTo: flag ? `${environment.clientURL}/login` : `${environment.clientURL}/not-verified`
