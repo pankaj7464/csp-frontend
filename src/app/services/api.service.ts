@@ -513,7 +513,7 @@ export class ApiService {
     console.log(data);
     this.showLoader();
     return this.http
-      .post<any>(this.apiUrl + `user/assign-role`, data, {
+      .put<any>(this.apiUrl + `user/roles`, data, {
         responseType: 'text' as 'json',
       })
       .pipe(finalize(() => {

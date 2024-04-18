@@ -18,8 +18,8 @@ export class RoleEditModalComponent {
     console.log(data.user)
     this.userData = data.user;
     this.userRoleForm = this.formBuilder.group({
-      userId: [ this.userData.id || '', [Validators.required]],
-      roleId: ['', [Validators.required]]
+      userId: [this.userData.id || '', [Validators.required]],
+      roleIds: [['', Validators.required]]
     });
   }
 
@@ -43,7 +43,7 @@ export class RoleEditModalComponent {
         this.getAllRole();
         this.apiService.showSuccessToast('Role Updated Successfully');
       })
-     
+
     }
   }
 
