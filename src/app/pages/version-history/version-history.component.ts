@@ -39,10 +39,10 @@ export class VersionHistoryComponent implements OnInit {
       type: ['', Validators.required],
       change: ['', Validators.required],
       changeReason: ['', Validators.required],
-      createdBy: ['', Validators.required],
+      CreatedById: ['', Validators.required],
       revisionDate: ['', Validators.required],
       approvalDate: [''],
-      approvedBy: [''],
+      ApprovedById: [''],
       projectId: [id || '', Validators.required],
     });
 

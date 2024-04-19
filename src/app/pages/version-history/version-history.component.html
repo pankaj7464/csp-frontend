@@ -47,7 +47,7 @@
     <!-- Created By -->
     <mat-form-field class="flex-1 w-full">
       <mat-label>Created By</mat-label>
-      <mat-select formControlName="createdBy">
+      <mat-select formControlName="CreatedById">
         <mat-option
           *ngFor="let manager of managers; let idx = index"
           [value]="manager.id"
@@ -85,7 +85,7 @@
     <!-- Approved By -->
     <mat-form-field class="flex-1 w-full">
       <mat-label>Approve By</mat-label>
-      <mat-select formControlName="createdBy">
+      <mat-select formControlName="ApprovedById">
         <mat-option
 
           *ngFor="let manager of managers; let idx = index"
